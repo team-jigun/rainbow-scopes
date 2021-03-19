@@ -1,41 +1,34 @@
-import * as vscode from 'vscode'
+import * as fs from 'fs';
+import * as vscode from 'vscode';
+import * as path from 'path';
 
-const decorationType = vscode.window.createTextEditorDecorationType({
-  backgroundColor: 'green',
-  border: '2px solid white',
-})
-
-export function activate(context: vscode.ExtensionContext) {
-  vscode.workspace.onWillSaveTextDocument(event => {
-    const openEditor = vscode.window.visibleTextEditors.filter(
-      editor => editor.document.uri === event.document.uri
-    )[0]
-    decorate(openEditor)
-  })
+class LangModule {
+  name: string;
+  langmodule: any;
+  constructor(name: string, langmodule: any) {
+    this.name = name;
+    this.langmodule = langmodule;
+  }
 }
 
-function decorate(editor: vscode.TextEditor) {
-  let sourceCode = editor.document.getText()
-  let regex = /(console\.log)/
-
-  let decorationsArray: vscode.DecorationOptions[] = []
-
-  const sourceCodeArr = sourceCode.split('\n')
-
-  for (let line = 0; line < sourceCodeArr.length; line++) {
-    let match = sourceCodeArr[line].match(regex)
-
-    if (match !== null && match.index !== undefined) {
-      let range = new vscode.Range(
-        new vscode.Position(line, match.index),
-        new vscode.Position(line, match.index + match[1].length)
-      )
-
-      let decoration = { range }
-
-      decorationsArray.push(decoration)
-    }
+export async function activate(context: vscode.ExtensionContext) {
+  const langs: LangModule[] = [];
+  const langfiles = fs.readdirSync(path.join(__dirname, './langs'));
+  for(let langfile in langfiles) {
+    console.log(path.join(path.join(__dirname, './langs'), langfiles[langfile]));
+    if(!langfiles[langfile].endsWith('.js')) continue;
+    const lang = langfiles[langfile].replace('.js', '');
+    langs.push(new LangModule(lang, await import(path.join(path.join(__dirname, './langs'), langfiles[langfile]))));
   }
-
-  editor.setDecorations(decorationType, decorationsArray)
+  
+  vscode.workspace.onDidChangeTextDocument(event => {
+    const openEditor = vscode.window.visibleTextEditors.filter(
+      editor => editor.document.uri === event.document.uri
+    )[0];
+    for(let lang in langs) {
+      if(langs[lang].name === openEditor.document.languageId) {
+        langs[lang].langmodule.decorate(openEditor);
+      }
+    }
+  });
 }
