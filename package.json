@@ -10,16 +10,10 @@
 		"Other"
 	],
 	"activationEvents": [
-        "onCommand:rainbow-scopes.helloWorld"
+        "onLanguage:python"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
-		"commands": [
-			{
-				"command": "rainbow-scopes.helloWorld",
-                "title": "Hello World"
-			}
-		]
 	},
 	"scripts": {
 		"vscode:prepublish": "yarn run compile",
