@@ -10,10 +10,36 @@
 		"Other"
 	],
 	"activationEvents": [
-        "onLanguage:python"
+        "onLanguage:python",
+		"onLanguage:javascript"
 	],
 	"main": "./out/extension.js",
 	"contributes": {
+		"configuration": [
+			{
+				"title": "Rainbow Scopes",
+				"properties": {
+					"rainbow-scopes.colors": {
+						"type": "array",
+						"default": [
+							{"red": 255, "green": 0, "blue": 0},
+							{"red": 255, "green": 165, "blue": 0},
+							{"red": 255, "green": 255, "blue": 0},
+							{"red": 0, "green": 128, "blue": 0},
+							{"red": 0, "green": 0, "blue": 255},
+							{"red": 75, "green": 0, "blue": 130},
+							{"red": 238, "green": 130, "blue": 238}
+						],
+						"description": "Sets which color to be used on background"
+					},
+					"rainbow-scopes.opacity": {
+						"type": "number",
+						"default": 0.2,
+						"description": "Sets which opacity to be used on background"
+					}
+				}
+			}
+		]
 	},
 	"scripts": {
 		"vscode:prepublish": "yarn run compile",
