@@ -1,6 +1,6 @@
 {
-	"name": "rainbow-scopes",
-	"displayName": "Rainbow Scopes",
+	"name": "rainbow-indent",
+	"displayName": "Rainbow Indent",
 	"description": "Highlights background color by scopes",
 	"version": "0.0.1",
 	"engines": {
@@ -17,9 +17,9 @@
 	"contributes": {
 		"configuration": [
 			{
-				"title": "Rainbow Scopes",
+				"title": "Rainbow Indent",
 				"properties": {
-					"rainbow-scopes.colors": {
+					"rainbow-indent.colors": {
 						"type": "array",
 						"default": [
 							{"red": 255, "green": 0, "blue": 0},
@@ -32,7 +32,7 @@
 						],
 						"description": "Sets which color to be used on background"
 					},
-					"rainbow-scopes.opacity": {
+					"rainbow-indent.opacity": {
 						"type": "number",
 						"default": 0.2,
 						"description": "Sets which opacity to be used on background"
